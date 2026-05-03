@@ -1,0 +1,494 @@
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { 
+  Phone, 
+  MapPin, 
+  Clock, 
+  Mail, 
+  ChevronRight, 
+  CheckCircle2, 
+  Star, 
+  MessageSquare,
+  ArrowRight,
+  Menu,
+  X,
+  Stethoscope,
+  Smile,
+  ShieldCheck,
+  Award
+} from 'lucide-react';
+
+const colors = {
+  primary: '#0D9488', // Teal 600
+  secondary: '#F0FDFA', // Teal 50
+  accent: '#115E59', // Teal 800
+};
+
+export default function App() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const services = [
+    { title: 'General Dentistry', description: 'Comprehensive checkups and oral hygiene maintenance.', icon: <Smile className="w-6 h-6" /> },
+    { title: 'Root Canal (RCT)', description: 'Expert painless root canal treatments using modern tools.', icon: <Stethoscope className="w-6 h-6" /> },
+    { title: 'Dental Implants', description: 'Permanent solutions for missing teeth with high-grade implants.', icon: <Award className="w-6 h-6" /> },
+    { title: 'Braces & Ortho', description: 'Straighten your teeth with traditional or invisible braces.', icon: <ShieldCheck className="w-6 h-6" /> },
+    { title: 'Teeth Whitening', description: 'Professional whitening for a bright and confident smile.', icon: <Star className="w-6 h-6" /> },
+    { title: 'Kids Dentistry', description: 'Specialized and gentle dental care for your little ones.', icon: <MessageSquare className="w-6 h-6" /> },
+  ];
+
+  const pricing = [
+    { service: 'Consultation Fee', price: '₹200', highlight: false },
+    { service: 'Teeth Cleaning', price: '₹800 – ₹1500', highlight: true },
+    { service: 'RCT', price: '₹3000 – ₹6000', highlight: false },
+    { service: 'Tooth Extraction', price: '₹500 – ₹2000', highlight: false },
+    { service: 'Braces', price: '₹25,000+', highlight: false },
+  ];
+
+  const reviews = [
+    { name: 'Amit Kumar', comment: 'Doctor is very polite and explains everything clearly. Treatment was painless.', rating: 5 },
+    { name: 'Neha Sharma', comment: 'Affordable prices and clean clinic. Highly recommended.', rating: 5 },
+    { name: 'Rajesh Verma', comment: 'I got my RCT done here. Good experience and no pain.', rating: 5 },
+  ];
+
+  return (
+    <div className="min-h-screen font-sans">
+      {/* Navbar */}
+      <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-lg shadow-md py-3' : 'bg-transparent py-5'}`}>
+        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <div className="w-10 h-10 bg-clinic-primary rounded-xl flex items-center justify-center text-white shadow-lg">
+              <Smile size={24} />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-serif font-bold text-lg leading-tight tracking-tight">Shree Sai Dental</span>
+              <span className="text-[10px] uppercase tracking-[0.2em] font-medium text-clinic-primary">Multispeciality Clinic</span>
+            </div>
+          </div>
+
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center gap-8 text-sm font-medium">
+            <a href="#home" className="hover:text-clinic-primary transition-colors">Home</a>
+            <a href="#about" className="hover:text-clinic-primary transition-colors">About</a>
+            <a href="#services" className="hover:text-clinic-primary transition-colors">Services</a>
+            <a href="#pricing" className="hover:text-clinic-primary transition-colors">Pricing</a>
+            <a href="#contact" className="px-5 py-2.5 bg-clinic-primary text-white rounded-full hover:bg-clinic-accent transition-all shadow-md active:scale-95">Book Now</a>
+          </div>
+
+          {/* Mobile Toggle */}
+          <button className="md:hidden text-neutral-800" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div 
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="absolute top-full left-0 w-full bg-white shadow-2xl py-8 px-6 flex flex-col gap-6 md:hidden text-lg font-medium"
+            >
+              <a href="#home" onClick={() => setIsMenuOpen(false)}>Home</a>
+              <a href="#about" onClick={() => setIsMenuOpen(false)}>About</a>
+              <a href="#services" onClick={() => setIsMenuOpen(false)}>Services</a>
+              <a href="#contact" onClick={() => setIsMenuOpen(false)} className="text-clinic-primary font-bold">Book Appointment</a>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </nav>
+
+      {/* Hero Section */}
+      <section id="home" className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
+        {/* Background Decorative Elements */}
+        <div className="absolute top-0 right-0 -z-10 w-1/3 h-full bg-clinic-secondary rounded-l-[100px] hidden md:block"></div>
+        <div className="absolute -top-24 -left-24 w-96 h-96 bg-teal-100/50 rounded-full blur-3xl -z-10"></div>
+        
+        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-clinic-secondary text-clinic-primary rounded-full text-xs font-bold mb-6 ring-1 ring-clinic-primary/20">
+              <Star size={14} className="fill-clinic-primary" />
+              <span>TRUSTED BY 5000+ PATIENTS</span>
+            </div>
+            <h1 className="font-serif text-5xl md:text-7xl font-bold leading-[1.1] mb-6">
+              Caring for Your <span className="text-clinic-primary italic underline underline-offset-8">Smile</span> & Health
+            </h1>
+            <p className="text-neutral-600 text-lg md:text-xl mb-10 max-w-lg leading-relaxed">
+              Dr. Rohan Kumar Singh and team provide advanced, painless dental care with modern technology in the heart of Muzaffarpur.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <a href="#contact" className="px-8 py-4 bg-clinic-primary text-white rounded-2xl font-bold flex items-center justify-center gap-2 shadow-xl shadow-clinic-primary/20 hover:bg-clinic-accent transition-all hover:-translate-y-1">
+                Book Appointment <ArrowRight size={20} />
+              </a>
+              <a href="tel:+919123456789" className="px-8 py-4 bg-white border border-neutral-200 text-neutral-800 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-neutral-50 transition-all">
+                <Phone size={20} /> +91 91234 56789
+              </a>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.2 }}
+            className="relative"
+          >
+            <div className="aspect-[4/5] rounded-[40px] overflow-hidden shadow-2xl relative">
+              <img 
+                src="https://images.unsplash.com/photo-1629909613654-28a3a7c4eb40?auto=format&fit=crop&q=80&w=800" 
+                alt="Modern Consultation Room" 
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+              
+              {/* Doctor Info Card overlay */}
+              <div className="absolute bottom-6 left-6 right-6 p-6 glass-card rounded-3xl">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-inner">
+                    <img 
+                      src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=200" 
+                      alt="Dr. Rohan Kumar Singh" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg">Dr. Rohan Kumar Singh</h3>
+                    <p className="text-xs text-neutral-500 font-medium font-serif">BDS, MDS • 8+ Years Experience</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Decorative floaters */}
+            <motion.div 
+              animate={{ y: [0, -20, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute top-10 -right-10 p-4 bg-white rounded-2xl shadow-xl hidden lg:block"
+            >
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-yellow-100 text-yellow-600 rounded-lg">
+                  <CheckCircle2 size={24} />
+                </div>
+                <div>
+                  <p className="text-xs font-bold">100% Painless</p>
+                  <p className="text-[10px] text-neutral-500">Treatment Guarantee</p>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="bg-white py-12 md:py-20 border-y border-neutral-100">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
+          {[
+            { label: 'Happy Patients', value: '5000+' },
+            { label: 'Years Experience', value: '8+' },
+            { label: 'Advanced Equipments', value: '15+' },
+            { label: 'Expert Staffs', value: '10+' },
+          ].map((stat, idx) => (
+            <div key={idx} className="text-center">
+              <h2 className="text-4xl md:text-5xl font-bold text-clinic-primary mb-2 font-serif">{stat.value}</h2>
+              <p className="text-sm font-medium text-neutral-500 uppercase tracking-widest">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="section-padding grid md:grid-cols-2 gap-16 items-center">
+        <div className="order-2 md:order-1">
+          <h2 className="font-serif text-4xl font-bold mb-6">About the Doctor</h2>
+          <p className="text-neutral-600 leading-relaxed mb-6 text-lg">
+            Dr. Rohan Kumar Singh is a highly skilled dental surgeon specializing in Oral & Maxillofacial Surgery. With over 8 years of clinical excellence, he has become a trusted name for advanced dental procedures in Bihar.
+          </p>
+          <div className="space-y-4 mb-8">
+            {[
+              "Specializes in Oral & Maxillofacial Surgery",
+              "Registered with Bihar State Dental Council (A-24567)",
+              "Expert in Modern & Painless RCT Techniques",
+              "Passionate about Digital Dentistry & Implants"
+            ].map((point, idx) => (
+              <div key={idx} className="flex gap-3 items-start">
+                <div className="mt-1 flex-shrink-0 w-5 h-5 bg-clinic-secondary text-clinic-primary rounded-full flex items-center justify-center">
+                  <ChevronRight size={14} />
+                </div>
+                <span className="text-neutral-700 font-medium">{point}</span>
+              </div>
+            ))}
+          </div>
+          <button className="text-clinic-primary font-bold flex items-center gap-2 group">
+            Learn more about our methods <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+          </button>
+        </div>
+        <div className="order-1 md:order-2 grid grid-cols-2 gap-4">
+          <div className="space-y-4">
+            <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=400" alt="Clinic Interior" className="w-full aspect-[4/5] object-cover rounded-3xl" />
+            <div className="bg-clinic-primary p-8 rounded-3xl text-white">
+              <p className="text-4xl font-serif font-bold mb-2">99%</p>
+              <p className="text-sm opacity-80 uppercase tracking-widest font-bold">Success Rate</p>
+            </div>
+          </div>
+          <div className="pt-12 space-y-4">
+            <div className="bg-neutral-100 p-8 rounded-3xl text-neutral-800">
+              <Clock className="mb-4 text-clinic-primary" size={32} />
+              <p className="text-xl font-bold leading-tight">Prompt Appointments</p>
+            </div>
+            <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&q=80&w=400" alt="Dental Equipment" className="w-full aspect-[4/5] object-cover rounded-3xl" />
+          </div>
+        </div>
+      </section>
+
+      {/* Services Section */}
+      <section id="services" className="bg-neutral-50 py-24 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="font-serif text-4xl md:text-5xl font-bold mb-4">World Class Services</h2>
+            <p className="text-neutral-500 max-w-xl mx-auto text-lg">We provide a wide range of dental services with a focus on patient comfort and long-term results.</p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            {services.map((service, idx) => (
+              <motion.div 
+                key={idx}
+                whileHover={{ y: -10 }}
+                className="bg-white p-8 rounded-[32px] border border-neutral-100 shadow-sm hover:shadow-xl transition-all duration-300 group"
+              >
+                <div className="w-14 h-14 bg-clinic-secondary text-clinic-primary rounded-2xl flex items-center justify-center mb-6 group-hover:bg-clinic-primary group-hover:text-white transition-colors">
+                  {service.icon}
+                </div>
+                <h3 className="text-xl font-bold mb-4">{service.title}</h3>
+                <p className="text-neutral-500 leading-relaxed mb-6">{service.description}</p>
+                <div className="flex items-center gap-1 text-clinic-primary font-bold text-sm">
+                  Service Details <ChevronRight size={16} />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing Section */}
+      <section id="pricing" className="section-padding">
+        <div className="grid lg:grid-cols-2 gap-20 items-center">
+          <div>
+            <span className="text-clinic-primary font-bold tracking-widest text-sm uppercase mb-4 block">Transparent Pricing</span>
+            <h2 className="font-serif text-4xl md:text-5xl font-bold mb-8 leading-tight">High Quality Care, <br/>Affordable Prices.</h2>
+            <p className="text-neutral-500 text-lg mb-12">We believe everyone deserves a healthy smile. Our pricing is transparent with no hidden costs. Consultation is just ₹200.</p>
+            
+            <div className="space-y-6">
+              {pricing.map((item, idx) => (
+                <div key={idx} className={`flex justify-between items-center p-6 rounded-2xl border transition-all ${item.highlight ? 'bg-clinic-secondary border-clinic-primary/20 scale-105 shadow-lg' : 'bg-white border-neutral-100 shadow-sm'}`}>
+                  <span className="font-bold text-lg">{item.service}</span>
+                  <div className="flex flex-col items-end">
+                    <span className={`text-xl font-serif font-bold ${item.highlight ? 'text-clinic-primary' : ''}`}>{item.price}</span>
+                    {item.highlight && <span className="text-[10px] uppercase tracking-tighter bg-clinic-primary text-white px-2 rounded-full font-bold">Most Popular</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div className="relative">
+             <div className="bg-clinic-primary/5 absolute inset-0 rounded-[48px] -rotate-3"></div>
+             <div className="relative glass-card rounded-[48px] p-12 shadow-2xl">
+                <h3 className="font-serif text-3xl font-bold mb-8">Patient Reviews</h3>
+                <div className="space-y-10">
+                  {reviews.map((review, idx) => (
+                    <div key={idx} className="relative">
+                      <div className="flex gap-1 text-yellow-500 mb-3">
+                        {[...Array(review.rating)].map((_, i) => <Star key={i} size={16} className="fill-current" />)}
+                      </div>
+                      <p className="text-lg italic text-neutral-700 mb-4">"{review.comment}"</p>
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-neutral-200"></div>
+                        <span className="font-bold">{review.name}</span>
+                      </div>
+                      {idx < reviews.length - 1 && <div className="mt-10 h-px bg-neutral-100 w-1/2"></div>}
+                    </div>
+                  ))}
+                </div>
+             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Appointment CTA */}
+      <section id="contact" className="px-6 pb-24">
+        <div className="max-w-7xl mx-auto bg-clinic-accent rounded-[60px] p-12 md:p-20 text-white overflow-hidden relative">
+          {/* Decorative bits */}
+          <div className="absolute top-0 right-0 w-96 h-96 bg-clinic-primary/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
+          
+          <div className="grid md:grid-cols-2 gap-16 relative z-10">
+            <div>
+              <h2 className="font-serif text-4xl md:text-6xl font-bold mb-8 leading-tight">Book Your <br />Appointment Today</h2>
+              <p className="text-teal-100 text-lg mb-12 max-w-sm">Take the first step towards a healthier, brighter smile. Fill out the form or reach us via WhatsApp.</p>
+              
+              <div className="space-y-8">
+                <div className="flex gap-6 items-start">
+                  <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0">
+                    <MapPin size={24} />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-xl mb-1">Our Location</h4>
+                    <p className="text-teal-100 opacity-80 leading-relaxed">1st Floor, Gupta Market, Near SBI Bank, <br/>Kalambagh Road, Muzaffarpur, Bihar</p>
+                  </div>
+                </div>
+                
+                <div className="flex gap-6 items-start">
+                  <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0">
+                    <Phone size={24} />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-xl mb-1">Call / WhatsApp</h4>
+                    <p className="text-teal-100 opacity-80 leading-relaxed underline font-medium">+91 91234 56789</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-[40px] p-8 md:p-10 text-neutral-900 shadow-2xl">
+              <form className="space-y-6">
+                <div>
+                  <label className="block text-sm font-bold mb-2 uppercase tracking-wide text-neutral-500">Full Name</label>
+                  <input type="text" placeholder="Your Name" className="w-full bg-neutral-50 border border-neutral-100 rounded-2xl py-4 px-6 focus:ring-2 focus:ring-clinic-primary focus:outline-none" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold mb-2 uppercase tracking-wide text-neutral-500">Phone</label>
+                  <input type="tel" placeholder="+91 00000 00000" className="w-full bg-neutral-50 border border-neutral-100 rounded-2xl py-4 px-6 focus:ring-2 focus:ring-clinic-primary focus:outline-none" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold mb-2 uppercase tracking-wide text-neutral-500">Your Concern</label>
+                  <select className="w-full bg-neutral-50 border border-neutral-100 rounded-2xl py-4 px-6 focus:ring-2 focus:ring-clinic-primary focus:outline-none appearance-none">
+                    <option>General Consultation</option>
+                    <option>Tooth Pain / RCT</option>
+                    <option>Teeth Whitening</option>
+                    <option>Braces / Implants</option>
+                  </select>
+                </div>
+                <button type="submit" className="w-full bg-clinic-primary text-white rounded-2xl py-5 font-bold shadow-xl shadow-clinic-primary/20 hover:scale-[1.02] active:scale-95 transition-all">
+                  Request Callback
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Timings & Map */}
+      <section className="section-padding grid md:grid-cols-2 gap-12">
+        <div className="bg-white p-10 rounded-[40px] border border-neutral-100 shadow-sm h-full flex flex-col">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-10 h-10 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center">
+              <Clock size={24} />
+            </div>
+            <h3 className="font-serif text-2xl font-bold">Clinic Timings</h3>
+          </div>
+          
+          <div className="space-y-4 flex-grow">
+            {[
+              { day: 'Monday – Friday', time: '10:00 AM – 2:00 PM, 5:00 PM – 9:00 PM' },
+              { day: 'Saturday', time: '10:00 AM – 6:00 PM' },
+              { day: 'Sunday', time: 'Closed', closed: true },
+            ].map((slot, idx) => (
+              <div key={idx} className="flex justify-between items-center py-3 border-b border-neutral-50">
+                <span className="font-medium text-neutral-600">{slot.day}</span>
+                <span className={`font-bold ${slot.closed ? 'text-red-500' : ''}`}>{slot.time}</span>
+              </div>
+            ))}
+          </div>
+          
+          <div className="mt-10 p-6 bg-teal-50 rounded-3xl flex items-center gap-4">
+            <Mail className="text-clinic-primary" />
+            <div>
+              <p className="text-xs font-bold text-clinic-primary">EMAIL US</p>
+              <p className="font-medium">shreesaiclinic@gmail.com</p>
+            </div>
+          </div>
+        </div>
+        
+        <div className="rounded-[40px] overflow-hidden shadow-sm h-[400px] md:h-full relative ring-1 ring-neutral-200">
+           {/* Map Placeholder */}
+           <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d114867.753896!2d85.3129!3d26.1209!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ed10e74f146f49%3A0xf63991b15c9ed526!2sMuzaffarpur%2C%20Bihar!5e0!3m2!1sen!2sin!4v1714900000000!5m2!1sen!2sin" 
+            className="w-full h-full border-none grayscale contrast-125"
+            loading="lazy"
+            title="Clinic Location"
+           ></iframe>
+           <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-4 rounded-2xl shadow-lg border border-white max-w-[200px]">
+              <p className="text-xs font-bold text-clinic-primary mb-1 inline-flex items-center gap-1"><MapPin size={12} /> LOCATE US</p>
+              <p className="text-[10px] font-medium leading-relaxed">Gupta Market, near SBI, Kalambagh Road, Muzaffarpur.</p>
+           </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-neutral-900 pt-20 pb-10 text-white overflow-hidden relative">
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <div className="grid md:grid-cols-4 gap-12 mb-16">
+            <div className="md:col-span-2">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 bg-clinic-primary rounded-2xl flex items-center justify-center text-white">
+                  <Smile size={32} />
+                </div>
+                <span className="font-serif font-bold text-2xl tracking-tight">Shree Sai Clinic</span>
+              </div>
+              <p className="text-neutral-400 max-w-sm leading-relaxed mb-8">
+                Providing comprehensive dental solutions combined with advanced treatment techniques for patients in Muzaffarpur and nearby regions.
+              </p>
+              <div className="flex gap-4">
+                {['facebook', 'instagram', 'whatsapp'].map(social => (
+                   <a key={social} href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-clinic-primary hover:border-clinic-primary transition-all">
+                      <MessageSquare size={18} />
+                   </a>
+                ))}
+              </div>
+            </div>
+            
+            <div>
+              <h4 className="font-bold text-lg mb-6 underline underline-offset-8 decoration-clinic-primary">Quick Links</h4>
+              <ul className="space-y-4 text-neutral-400">
+                <li><a href="#home" className="hover:text-white transition-colors">Home</a></li>
+                <li><a href="#about" className="hover:text-white transition-colors">About</a></li>
+                <li><a href="#services" className="hover:text-white transition-colors">Services</a></li>
+                <li><a href="#pricing" className="hover:text-white transition-colors">Pricing</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="font-bold text-lg mb-6 underline underline-offset-8 decoration-clinic-primary">Emergency</h4>
+              <p className="text-neutral-400 mb-2">Need immediate dental care?</p>
+              <p className="text-2xl font-bold text-clinic-primary mb-6">+91 91234 56789</p>
+              <p className="text-xs opacity-50 uppercase tracking-widest font-bold">Registration No.</p>
+              <p className="text-sm">A-24567 (BSDC)</p>
+            </div>
+          </div>
+          
+          <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-neutral-500 font-medium">
+             <p>© 2024 Shree Sai Dental Clinic. All Rights Reserved.</p>
+             <div className="flex gap-8">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+             </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
